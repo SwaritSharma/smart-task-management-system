@@ -30,4 +30,39 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(response);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
+        ErrorResponse response = new ErrorResponse(
+                404,
+                ex.getMessage(),
+                null,
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status(404).body(response);
+
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleTaskNotFoundException(TaskNotFoundException ex) {
+        ErrorResponse response = new ErrorResponse(
+                404,
+                ex.getMessage(),
+                null,
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(404).body(response);
+    }
+
+    @ExceptionHandler(InvalidTaskStatusException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTaskStatusException(InvalidTaskStatusException ex) {
+        ErrorResponse response = new ErrorResponse(
+                400,
+                ex.getMessage(),
+                null,
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(400).body(response);
+    }
 }

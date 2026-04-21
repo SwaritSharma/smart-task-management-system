@@ -3,8 +3,10 @@ package com.friday.taskmanagement.service;
 import com.friday.taskmanagement.dto.UserRequestDTO;
 import com.friday.taskmanagement.dto.UserResponseDTO;
 import com.friday.taskmanagement.entity.User;
+import com.friday.taskmanagement.exception.UserNotFoundException;
 import com.friday.taskmanagement.mapper.UserMapper;
 import com.friday.taskmanagement.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,7 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepo;
-    private String mssg="User not found";
-
+    private String mssg="User ID not found ";
     public UserResponseDTO addUser(UserRequestDTO requestDTO) {
         User u=userMapper.toEntity(requestDTO);
         if(u.getEmail().endsWith("@taskmanagement.com")){
@@ -36,17 +37,17 @@ public class UserService {
     }
 
     public UserResponseDTO getUserById(Long id) {
-        User res=userRepo.findById(id).orElseThrow(()->new RuntimeException(mssg));
+        User res=userRepo.findById(id).orElseThrow(()->new UserNotFoundException(mssg+ id));
         return userMapper.toDTO(res);
     }
 
     public void deleteUserById(Long id) {
-        User user=userRepo.findById(id).orElseThrow(()->new RuntimeException(mssg));
+        User user=userRepo.findById(id).orElseThrow(()->new UserNotFoundException(mssg+ id));
         userRepo.delete(user);
     }
 
-    public UserResponseDTO updateUser(Long id,UserRequestDTO requestDTO) {
-        User user=userRepo.findById(id).orElseThrow(()->new RuntimeException(mssg));
+    public UserResponseDTO updateUser(Long id,@Valid UserRequestDTO requestDTO) {
+        User user=userRepo.findById(id).orElseThrow(()->new UserNotFoundException(mssg+ id));
         user.setEmail(requestDTO.getEmail());
         user.setPassword(requestDTO.getPassword());
         user.setUsername(requestDTO.getUsername());
