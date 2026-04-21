@@ -20,7 +20,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
     private String dueDate;
-    //By default already is EAGER
+    //By default already is LAZY
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User assignee;

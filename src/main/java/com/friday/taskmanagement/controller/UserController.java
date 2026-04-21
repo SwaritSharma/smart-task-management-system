@@ -3,6 +3,7 @@ package com.friday.taskmanagement.controller;
 import com.friday.taskmanagement.dto.UserRequestDTO;
 import com.friday.taskmanagement.dto.UserResponseDTO;
 import com.friday.taskmanagement.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService ser;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO requestDTO) {
+    public ResponseEntity<UserResponseDTO> registerUser(@Valid @RequestBody UserRequestDTO requestDTO) {
         return new ResponseEntity<>(ser.addUser(requestDTO), HttpStatus.CREATED);
     }
 
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id ,@RequestBody UserRequestDTO requestDTO) {
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id ,@Valid @RequestBody UserRequestDTO requestDTO) {
         return new ResponseEntity<>(ser.updateUser(id,requestDTO),HttpStatus.OK);
     }
 }

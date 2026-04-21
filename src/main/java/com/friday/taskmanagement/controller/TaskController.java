@@ -1,5 +1,6 @@
 package com.friday.taskmanagement.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import com.friday.taskmanagement.dto.*;
 import com.friday.taskmanagement.enums.TaskStatus;
@@ -18,7 +19,7 @@ public class TaskController {
     private final TaskService ser;
 
     @PostMapping("/add")
-    public ResponseEntity<TaskResponseDTO> addTask(@RequestBody TaskRequestDTO requestDTO) {
+    public ResponseEntity<TaskResponseDTO> addTask(@Valid @RequestBody TaskRequestDTO requestDTO) {
         return new ResponseEntity<>(ser.createTask(requestDTO), HttpStatus.CREATED);
     }
 
@@ -44,17 +45,17 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<TaskStatusUpdateResponseDTO>  updateTaskStatus(@PathVariable Long id, @RequestBody TaskStatusUpdateRequestDTO requestDTO){
+    public ResponseEntity<TaskStatusUpdateResponseDTO>  updateTaskStatus(@PathVariable Long id,@Valid @RequestBody TaskStatusUpdateRequestDTO requestDTO){
         return new ResponseEntity<>(ser.updateStatus(id,requestDTO),HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/assign")
-    public ResponseEntity<TaskResponseDTO> updateTaskAssignee(@PathVariable Long id, @RequestBody TaskAssignDTO  requestDTO){
+    public ResponseEntity<TaskResponseDTO> updateTaskAssignee(@PathVariable Long id,@Valid @RequestBody TaskAssignDTO  requestDTO){
         return new ResponseEntity<>(ser.reassignAssignee(id,requestDTO),HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/update")
-    public  ResponseEntity<TaskResponseDTO> updateTask(@RequestBody TaskUpdateDTO  requestDTO, @PathVariable Long id){
+    public  ResponseEntity<TaskResponseDTO> updateTask(@Valid @RequestBody TaskUpdateDTO  requestDTO, @PathVariable Long id){
         return new ResponseEntity<>(ser.updateTask(id,requestDTO),HttpStatus.OK);
     }
 
